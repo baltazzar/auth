@@ -9,7 +9,7 @@
     "grunt-contrib-jshint": "*",
     "grunt-contrib-requirejs": "*"
   },
-  "main": "dist/auth.js",
+  "main": "auth.js",
   "scripts": {
     "preinstall": "npm install -g grunt-cli"
   }

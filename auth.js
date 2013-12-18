@@ -1,6 +1,6 @@
 /**
  * Baltazzar Auth
- * Versão: 1.0.0
+ * Versão: 0.1.0
  * Módulo front-end de autenticação para aplicações web.
  * Autor: Victor Bastos
  */

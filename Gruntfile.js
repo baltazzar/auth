@@ -70,7 +70,7 @@ module.exports = function(grunt) {
 			normal: {
 				options: {
 					optimize: 'none',
-					out: 'auth.js'
+					out: 'dist/auth.js'
 				}
 			},
 			min: {
@@ -81,7 +81,7 @@ module.exports = function(grunt) {
 							comments: true
 						}
 					},
-					out: 'auth.min.js'
+					out: 'dist/auth.min.js'
 				}
 			}
 		}

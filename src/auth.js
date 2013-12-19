@@ -19,7 +19,7 @@ define(function(require, exports, module){
 			this.loggedUserEl = options.loggedUserEl;
 			this.appSigla = options.appSigla || 'App';
 
-			this.protectViews(options.app);
+			this.protectViews();
 			this.setLoggedUserEl();
 		},
 
@@ -32,7 +32,7 @@ define(function(require, exports, module){
 			});
 		},
 
-		protectViews: function(App) {
+		protectViews: function() {
 			var Auth = this;
 			Marionette.Region.prototype.open = function(view) {
 				var Region = this;

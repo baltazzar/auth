@@ -1,5 +1,5 @@
 <div class="pull-right">
-	<p class="navbar-text">
+	<p class="navbar-text auth-logged-user">
 		{{ loggedUser }}
 	</p>
 	<button class="btn btn-xs btn-warning auth-logout" style="margin-top:14px; margin-right:10px;">Sair</button>

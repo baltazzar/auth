@@ -1,6 +1,6 @@
 /**
  * Baltazzar Auth
- * Versão: 0.1.0
+ * Versão: 0.1.2
  * Módulo front-end de autenticação para aplicações web.
  * Autor: Victor Bastos
  */
@@ -39,7 +39,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
 
 
-  buffer += "<div class=\"pull-right\">\r\n	<p class=\"navbar-text\">\r\n		";
+  buffer += "<div class=\"pull-right\">\r\n	<p class=\"navbar-text auth-logged-user\">\r\n		";
   if (stack1 = helpers.loggedUser) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
   else { stack1 = (depth0 && depth0.loggedUser); stack1 = typeof stack1 === functionType ? stack1.call(depth0, {hash:{},data:data}) : stack1; }
   buffer += escapeExpression(stack1)
@@ -95,7 +95,7 @@ define('auth',['require','exports','module','marionette','./views/login','handle
 			this.loggedUserEl = options.loggedUserEl;
 			this.appSigla = options.appSigla || 'App';
 
-			this.protectViews(options.app);
+			this.protectViews();
 			this.setLoggedUserEl();
 		},
 
@@ -108,7 +108,7 @@ define('auth',['require','exports','module','marionette','./views/login','handle
 			});
 		},
 
-		protectViews: function(App) {
+		protectViews: function() {
 			var Auth = this;
 			Marionette.Region.prototype.open = function(view) {
 				var Region = this;

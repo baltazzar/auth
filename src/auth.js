@@ -90,6 +90,7 @@ define(function(require, exports, module){
 			var	that = this;
 
 			$.ajax({
+				method: 'POST',
 				url: that.logoutUrl,
 				async: false,
 				cache: false,

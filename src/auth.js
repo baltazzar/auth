@@ -79,6 +79,7 @@ define(function(require, exports, module){
 				success: function(res) {
 					if(res.status) {
 						Backbone.history.navigate('', {trigger: true});
+						location.reload();
 					} else {
 						mensagemEl.html(res.message).removeClass('hide').fadeIn().delay(3000).fadeOut();
 					}

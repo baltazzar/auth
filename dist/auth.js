@@ -1,6 +1,6 @@
 /**
  * Baltazzar Auth
- * Versão: 0.1.4
+ * Versão: 0.1.5
  * Módulo front-end de autenticação para aplicações web.
  * Autor: Victor Bastos
  */
@@ -155,6 +155,7 @@ define('auth',['require','exports','module','marionette','./views/login','handle
 				success: function(res) {
 					if(res.status) {
 						Backbone.history.navigate('', {trigger: true});
+						location.reload();
 					} else {
 						mensagemEl.html(res.message).removeClass('hide').fadeIn().delay(3000).fadeOut();
 					}

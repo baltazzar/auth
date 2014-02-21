@@ -12,6 +12,10 @@ define(function(require, exports, module){
 			this.model = new Backbone.Model(options);
 		},
 
+		onShow: function() {
+			this.$('input:first').focus();
+		},
+
 		doLogin: function(ev) {
 			ev.preventDefault();
 			var username = this.$('.auth-username').val(),

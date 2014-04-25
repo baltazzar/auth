@@ -1,0 +1,182 @@
+<html lang="pt-br">
+	<head>
+		<meta charset="UTF-8">
+		<title>Componente auth - testes</title>
+
+		<!-- LIBS NECESSARIAS -->
+		<script src="../libs/jquery.js"></script>
+		<script src="../libs/underscore.js"></script>
+		<script src="../libs/backbone.js"></script>
+
+		<!-- COMPONENTE auth -->
+		<script src="../dist/auth.js"></script>
+
+		<!-- CSS NECESSARIO -->
+		<link href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
+
+		<style type="text/css">
+			/* Login Form */
+			.login-block {
+				width: 400px;
+				margin: auto;
+			}
+
+			.login-block-sigla {
+				margin-top: -10px;
+				font-family: verdana;
+				font-size: 50px;
+				font-weight: bold;
+				color: orange;
+				text-shadow: 3px 3px 7px #555;
+				letter-spacing: 0.5px;
+				width: 100%;
+				text-align: center;
+			}
+
+			.login-block-descricao {
+				margin-top: -10px;
+				margin-bottom: 20px;
+				font-family: verdana;
+				font-size: 11px;
+				color: slategray;
+				letter-spacing: 0.5px;
+				width: 100%;
+				text-align: center;
+			}
+
+			.login-block-message {
+				font-family: verdana;
+				font-size: 12px;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="container">
+			<div class="row">
+				<div class="col-md-offset-3 col-md-6">
+					<div id="paginaLogin"></div>
+				</div>
+			</div>
+		</div>
+
+		<div class="container">
+			<div class="row pull-right">
+				<button type="BUTTON" onclick="testeLogout();">Testar Logout</button>
+				<button type="BUTTON" onclick="testeIsLogged();">Testar IsLogged</button>
+			</div>
+		</div>
+
+		<script type="text/javascript">
+			// ------------------------------------------------------------
+			// INIT - VARIAVEIS GLOBAIS DE INICIALIZACAO (APENAS UMA VEZ)
+			baltazzar.auth.init({
+				loginUrl: 'http://servidor:porta/aplicacao' + '/componentedepermissoes/metododelogon'
+				,logoutUrl: 'http://servidor:porta/aplicacao' + '/componentedepermissoes/metododelogout'
+				,loggedUserUrl: 'http://servidor:porta/aplicacao' + '/componentedepermissoes/validausuarioautenticado'
+				,loginShowMessageTimer: 3000
+				,appSigla: 'Sigla APP'
+				,appDescricao: 'Descrição APP'
+				,appBotao: 'Confirmar'
+				,callbackdoLoginOK: function(resOK) {
+								if(resOK.status && resOK.data) {
+									console.log('logado!');
+								} else {
+									console.log(resOK.message);
+								}
+							}
+				,callbackdoLoginNOK: function() {
+								console.log('Problemas com o servidor.');
+							}
+			});
+			// ------------------------------------------------------------
+
+			// ------------------------------------------------------------
+			// RENDERIZAR PAGINA DE LOGIN DO USUARIO
+
+			// Teste template/Eventos customizados (1/2)
+			var _loginTemplateCustom = [
+			'<div class="login-block">',
+			'	<div class="panel panel-default">',
+			'		<div class="panel-heading">&nbsp;</div>',
+			'		<div class="panel-body">',
+			'			<form class="login-block-form">',
+			'				<div class="col-md-12 login-block-sigla text-center">CUSTOM</div>',
+			'				<div class="col-md-12 login-block-descricao">Descrição Custom</div>',
+			'				<div class="col-md-12">',
+			'					<div class="alert alert-danger login-block-message hide"></div>',
+			'				</div>',
+			'				<div class="col-md-12">',
+			'					<div class="form-group">',
+			'						<input type="text" class="form-control input-sm login-block-username" placeholder="Usuário">',
+			'					</div>',
+			'				</div>',
+			'				<div class="col-md-12">',
+			'					<div class="form-group">',
+			'						<input type="password" class="form-control input-sm login-block-password" placeholder="Senha">',
+			'					</div>',
+			'				</div>',
+			'				<div class="col-md-12">',
+			'					<button type="SUBMIT" class="btn btn-success btn-block pull-right login-block-confirm">Confirmar</button>',
+			'				</div>',
+			'			</form>',
+			'			<div class="col-md-12">',
+			'				<br><button type="BUTTON" class="btn btn-danger btn-block login-block-custom" onClick="paginaLogin.events.eventCustom1();">Botão Custom1</button>',
+			'			</div>',
+			'			<div class="col-md-12">',
+			'				<br><button type="BUTTON" class="btn btn-warning btn-block login-block-custom" onClick="paginaLogin.events.eventCustom2();">Botão Custom2</button>',
+			'			</div>',
+			'		</div>',
+			'	</div>',
+			'</div>'].join('');
+			var _loginEventsCustom = { eventCustom1: function() { console.log('eventoCustom1!'); }, eventCustom2: function() { console.log('eventoCustom2!'); } };
+
+			// Renderiza pagina
+			var loginView = baltazzar.auth.loginView;
+			var paginaLogin = new loginView({
+				el: '#paginaLogin'
+				// Teste template/Eventos customizados (2/2)
+				,_template: _loginTemplateCustom
+				,_events: _loginEventsCustom
+			});
+			// ------------------------------------------------------------
+
+			// ------------------------------------------------------------
+			// EFETUAR LOGOUT DO USUARIO
+			var testeLogout = function() {
+				callbackdoLogoutOK = function(resOK) {
+								if(resOK.status) {
+									console.log('Foi deslogado!');
+								} else {
+									console.log(resOK.message);
+								}
+							};
+
+				callbackdoLogoutNOK = function(resNOK) {
+								console.log(resNOK.message);
+							};
+
+				baltazzar.auth.logout().success(callbackdoLogoutOK).error(callbackdoLogoutNOK);
+			};
+			// ------------------------------------------------------------
+
+			// ------------------------------------------------------------
+			// VERIFICAR SE USUARIO ESTA LOGADO
+			var testeIsLogged = function() {
+				callbackdoIsLoggedOK = function(resOK) {
+								if(resOK.status && resOK.data) {
+									console.log('Usuário ' + resOK.data.login + ' está logado!');
+								} else {
+									console.log('Usuário está deslogado.');
+								}
+							};
+
+				callbackdoIsLoggedNOK = function(resNOK) {
+								console.log(resNOK.message);
+							};
+
+				baltazzar.auth.isLogged().success(callbackdoIsLoggedOK).error(callbackdoIsLoggedNOK);
+			};
+			// ------------------------------------------------------------
+		</script>
+	</body>
+</html>

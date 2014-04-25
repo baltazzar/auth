@@ -18,7 +18,8 @@
       "jquery": "github:jquery/jquery/1.11.0",
       "underscore": "github:jashkenas/underscore/1.6.0",
       "backbone": "github:jashkenas/backbone/1.1.2"
-    }
+    },
+    "url": "https://raw.github.com/baltazzar/auth/{version}/dist/auth.min.js"
   },
   "scripts": {
     "preinstall": "npm install -g grunt-cli"

@@ -69,6 +69,11 @@ exports.loginView = Backbone.View.extend({
 
 	render: function() {
 		this.$el.html(this.template);
+		this.setaFoco();
+	},
+
+	setaFoco: function() {
+		this.$('input:first').focus();
 	},
 
 	login: function(username, password) {
@@ -91,20 +96,29 @@ exports.loginView = Backbone.View.extend({
 			loginBlockConfirm = $('.login-block-confirm'),
 			user = this.$('.login-block-username').val(),
 			pass = this.$('.login-block-password').val(),
-			timer = AUTH.loginShowMessageTimer;
+			timer = AUTH.loginShowMessageTimer,
+			that = this;
 
 		// Desabilita botao Confirmar para execucao do processo de login
 		loginBlockConfirm.prop('disabled', true);
 
 		// Procedimento de login
-		var retJSON = this.login(user, pass).success(AUTH.callbackdoLoginOK).error(AUTH.callbackdoLoginNOK).responseJSON;
+		var retCall = this.login(user, pass).success(AUTH.callbackdoLoginOK).error(AUTH.callbackdoLoginNOK);
 
-		if(!retJSON.status || !retJSON.data) {
-			// Exibe mensagem de erro caso ocorra e reabilita botao Confirmar
-			loginBlockMessage.html(retJSON.message).removeClass('hide').fadeIn().delay(timer).fadeOut(function() { loginBlockConfirm.prop('disabled', false); });
+		if(retCall) {
+			retJSON = retCall.responseJSON || null;
+
+			if(retJSON && (!retJSON.status || !retJSON.data)) {
+				// Exibe mensagem de erro caso ocorra e reabilita botao Confirmar
+				loginBlockMessage.html(retJSON.message).removeClass('hide').fadeIn().delay(timer).fadeOut(function() { loginBlockConfirm.prop('disabled', false); that.setaFoco(); });
+			} else {
+				// Reabilita botao Confirmar
+				loginBlockMessage.html(retCall.statusText).removeClass('hide').fadeIn().delay(timer).fadeOut(function() { loginBlockConfirm.prop('disabled', false); that.setaFoco(); });
+			}
 		} else {
 			// Reabilita botao Confirmar
 			loginBlockConfirm.prop('disabled', false);
+			this.setaFoco();
 		}
 	}
 });

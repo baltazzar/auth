@@ -77,23 +77,16 @@
 				,appSigla: 'Sigla APP'
 				,appDescricao: 'Descrição APP'
 				,appBotao: 'Confirmar'
-				,callbackdoLoginOK: function(resOK) {
-								if(resOK.status && resOK.data) {
-									console.log('logado!');
-								} else {
-									console.log(resOK.message);
-								}
-							}
-				,callbackdoLoginNOK: function(resNOK) {
-								console.log(resNOK.statusText);
-							}
 			});
 			// ------------------------------------------------------------
 
 			// ------------------------------------------------------------
 			// RENDERIZAR PAGINA DE LOGIN DO USUARIO
 
-			// Teste template/Eventos customizados (1/2)
+			// ---------------------------------------------------------------------------------------------------------------------------
+			// Teste template/eventos customizados (1/2)
+
+			// Template Custom
 			var _loginTemplateCustom = [
 			'<div class="login-block">',
 			'	<div class="panel panel-default">',
@@ -128,12 +121,25 @@
 			'		</div>',
 			'	</div>',
 			'</div>'].join('');
+
+			// Events Custom
 			var _loginEventsCustom = { eventCustom1: function() { console.log('eventoCustom1!'); }, eventCustom2: function() { console.log('eventoCustom2!'); } };
+			// ---------------------------------------------------------------------------------------------------------------------------
 
 			// Renderiza pagina
 			var loginView = baltazzar.auth.loginView;
 			var paginaLogin = new loginView({
 				el: '#paginaLogin'
+				,callbackdoLoginOK: function(resOK) {
+					if(resOK.status && resOK.data) {
+						console.log('logado!');
+					} else {
+						console.log(resOK.message);
+					}
+				}
+				,callbackdoLoginNOK: function(resNOK) {
+					console.log(resNOK.statusText);
+				}
 				// Teste template/Eventos customizados (2/2)
 				,_template: _loginTemplateCustom
 				,_events: _loginEventsCustom
@@ -144,16 +150,16 @@
 			// EFETUAR LOGOUT DO USUARIO
 			var testeLogout = function() {
 				callbackdoLogoutOK = function(resOK) {
-								if(resOK.status) {
-									console.log('Foi deslogado!');
-								} else {
-									console.log(resOK.message);
-								}
-							};
+					if(resOK.status) {
+						console.log('Foi deslogado!');
+					} else {
+						console.log(resOK.message);
+					}
+				};
 
 				callbackdoLogoutNOK = function(resNOK) {
-								console.log(resNOK.statusText);
-							};
+					console.log(resNOK.statusText);
+				};
 
 				baltazzar.auth.logout().success(callbackdoLogoutOK).error(callbackdoLogoutNOK);
 			};
@@ -163,16 +169,16 @@
 			// VERIFICAR SE USUARIO ESTA LOGADO
 			var testeIsLogged = function() {
 				callbackdoIsLoggedOK = function(resOK) {
-								if(resOK.status && resOK.data) {
-									console.log('Usuário ' + resOK.data.login + ' está logado!');
-								} else {
-									console.log('Usuário está deslogado.');
-								}
-							};
+					if(resOK.status && resOK.data) {
+						console.log('Usuário ' + resOK.data.login + ' está logado!');
+					} else {
+						console.log('Usuário está deslogado.');
+					}
+				};
 
 				callbackdoIsLoggedNOK = function(resNOK) {
-								console.log(resNOK.statusText);
-							};
+					console.log(resNOK.statusText);
+				};
 
 				baltazzar.auth.isLogged().success(callbackdoIsLoggedOK).error(callbackdoIsLoggedNOK);
 			};

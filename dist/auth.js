@@ -20,8 +20,6 @@ exports.init = function(options) {
 	AUTH.appSigla = options.appSigla || 'Sigla';
 	AUTH.appDescricao = options.appDescricao || 'Descrição';
 	AUTH.appBotao = options.appBotao || 'Confirmar';
-	AUTH.callbackdoLoginOK = options.callbackdoLoginOK || '';
-	AUTH.callbackdoLoginNOK = options.callbackdoLoginNOK || '';
 };
 
 exports.loginView = Backbone.View.extend({
@@ -64,6 +62,9 @@ exports.loginView = Backbone.View.extend({
 		this.template = options._template || loginTemplate;
 		this.events = _.extend({}, this.events, options._events);
 
+		this.callbackdoLoginOK = options.callbackdoLoginOK || '';
+		this.callbackdoLoginNOK = options.callbackdoLoginNOK || '';
+
 		this.render();
 	},
 
@@ -97,22 +98,27 @@ exports.loginView = Backbone.View.extend({
 			user = this.$('.login-block-username').val(),
 			pass = this.$('.login-block-password').val(),
 			timer = AUTH.loginShowMessageTimer,
+			fRet = false,
 			that = this;
 
 		// Desabilita botao Confirmar para execucao do processo de login
 		loginBlockConfirm.prop('disabled', true);
 
 		// Procedimento de login
-		var retCall = this.login(user, pass).success(AUTH.callbackdoLoginOK).error(AUTH.callbackdoLoginNOK);
+		var retCall = this.login(user, pass).success(this.callbackdoLoginOK).error(this.callbackdoLoginNOK);
 
 		if(retCall) {
 			retJSON = retCall.responseJSON || null;
 
-			if(retJSON && (!retJSON.status || !retJSON.data)) {
-				// Exibe mensagem de erro caso ocorra e reabilita botao Confirmar
-				loginBlockMessage.html(retJSON.message).removeClass('hide').fadeIn().delay(timer).fadeOut(function() { loginBlockConfirm.prop('disabled', false); that.setaFoco(); });
+			if(retJSON) {
+				if(!retJSON.status || !retJSON.data) {
+					// Exibe mensagem de erro caso ocorra e reabilita botao Confirmar
+					loginBlockMessage.html(retJSON.message).removeClass('hide').fadeIn().delay(timer).fadeOut(function() { loginBlockConfirm.prop('disabled', false); that.setaFoco(); });
+				} else {
+					fRet = true;
+				}
 			} else {
-				// Reabilita botao Confirmar
+				// Exibe mensagem de erro caso ocorra e reabilita botao Confirmar
 				loginBlockMessage.html(retCall.statusText).removeClass('hide').fadeIn().delay(timer).fadeOut(function() { loginBlockConfirm.prop('disabled', false); that.setaFoco(); });
 			}
 		} else {
@@ -120,6 +126,8 @@ exports.loginView = Backbone.View.extend({
 			loginBlockConfirm.prop('disabled', false);
 			this.setaFoco();
 		}
+
+		return fRet;
 	}
 });
 

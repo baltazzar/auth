@@ -36,7 +36,7 @@ module.exports = function (grunt) {
 		},
 		watch: {
 			files: {
-				files: ['test/**/*', 'dist/**/*'],
+				files: ['test/**/*'],
 				options: {
 					livereload: '<%= livereloadPort %>'
 				}
@@ -49,7 +49,7 @@ module.exports = function (grunt) {
 		browserify: {
 			dev: {
 				src: ['src/<%= pkg.name %>.js'],
-				dest: 'dist/<%= pkg.name %>.js',
+				dest: '<%= pkg.name %>.js',
 				options: {
 					alias: ['libs/jquery.js:jquery', 'libs/underscore.js:underscore', 'libs/backbone.js:backbone'],
 					bundleOptions: {
@@ -59,7 +59,7 @@ module.exports = function (grunt) {
 			},
 			dist: {
 				src: ['src/<%= pkg.name %>.js'],
-				dest: 'dist/<%= pkg.name %>.js',
+				dest: '<%= pkg.name %>.js',
 				options: {
 					external: ['jquery', 'underscore', 'backbone'],
 					bundleOptions: {
@@ -69,7 +69,7 @@ module.exports = function (grunt) {
 			}
 		},
 		uglify: {
-			'dist/<%= pkg.name %>.min.js': ['dist/<%= pkg.name %>.js']
+			'<%= pkg.name %>.min.js': ['<%= pkg.name %>.js']
 		}
 	});
 
@@ -78,10 +78,10 @@ module.exports = function (grunt) {
 	grunt.registerTask('dev', ['browserify:dev', 'connect', 'watch']);
 	grunt.registerTask('banner', function() {
 		var banner = grunt.config.get('banner'),
-			fileContent = grunt.file.read('dist/auth.js'),
-			minFileContent = grunt.file.read('dist/auth.min.js');
+			fileContent = grunt.file.read('auth.js'),
+			minFileContent = grunt.file.read('auth.min.js');
 
-		grunt.file.write('dist/auth.js', banner + fileContent);
-		grunt.file.write('dist/auth.min.js', banner + minFileContent);
+		grunt.file.write('auth.js', banner + fileContent);
+		grunt.file.write('auth.min.js', banner + minFileContent);
 	});
 };

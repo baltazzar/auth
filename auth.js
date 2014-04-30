@@ -1,6 +1,6 @@
 /**
  * Baltazzar Auth
- * Versão: 1.0.0
+ * Versão: 1.0.3
  * Componente de autenticacao da PMS para o novo boiler plate
  * Autor: BaltazZar Team
  */

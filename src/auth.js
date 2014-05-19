@@ -62,8 +62,13 @@ exports.loginView = Backbone.View.extend({
 	},
 
 	render: function() {
+		var that = this;
+
 		this.$el.html(this.template);
-		this.setaFoco();
+
+		setTimeout(function() {
+			that.setaFoco();
+		}, 100);
 	},
 
 	setaFoco: function() {

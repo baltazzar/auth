@@ -1,6 +1,6 @@
 /**
  * Baltazzar Auth
- * Versão: 1.0.3
+ * Versão: 1.0.4
  * Componente de autenticacao da PMS para o novo boiler plate
  * Autor: BaltazZar Team
  */
@@ -69,8 +69,13 @@ exports.loginView = Backbone.View.extend({
 	},
 
 	render: function() {
+		var that = this;
+
 		this.$el.html(this.template);
-		this.setaFoco();
+
+		setTimeout(function() {
+			that.setaFoco();
+		}, 100);
 	},
 
 	setaFoco: function() {
